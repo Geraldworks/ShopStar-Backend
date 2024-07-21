@@ -20,9 +20,11 @@ router.post("/", async (req, res, next) => {
     );
 
     if (!passwordCorrect) {
-      res.status(401).json({ message: "incorrect password" });
+      res.status(401).json({ message: "Incorrect password" });
     } else {
       const userForToken = {
+        firstName: userFromDb.firstName,
+        lastName: userFromDb.lastName,
         username: userFromDb.username,
         id: userFromDb.id
       };
@@ -37,7 +39,7 @@ router.post("/", async (req, res, next) => {
     } else if (err instanceof PrismaClientKnownRequestError && err.code === "P2025") {
       res
         .status(404)
-        .json({ message: "Username does not exist in database. Please create an account" });
+        .json({ message: "User does not exist in database. Please create an account" });
     } else {
       next(err);
     }

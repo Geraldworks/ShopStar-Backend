@@ -6,6 +6,4 @@ const toValidUserLoginDetails = schemaValidator<ZodLoginUserPayload>(LoginUserSc
 
 const toValidUserDetails = schemaValidator<ZodCreateUserPayload>(CreateUserSchema);
 
-// const testValid = schemaValidator<ZodCreateUserPayload>();
-
 export { toValidUserDetails, toValidUserLoginDetails };

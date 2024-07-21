@@ -1,3 +1,4 @@
+import cors from "cors";
 import express, { json } from "express";
 
 import loginRouter from "./routes/loginRouter";
@@ -6,6 +7,7 @@ import middleware from "./utils/middleware";
 
 const app = express();
 
+app.use(cors());
 app.use(json());
 
 app.get("/", (_req, res) => {
