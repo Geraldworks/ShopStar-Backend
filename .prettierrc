@@ -6,5 +6,8 @@
   "tabWidth": 2,
   "useTabs": false,
   "printWidth": 100,
-  "plugins": ["prettier-plugin-prisma"]
+  "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-prisma"],
+  "importOrder": ["^@core/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
 }

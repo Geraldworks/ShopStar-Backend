@@ -1,6 +1,6 @@
-import { schemaValidator } from "./validationUtils";
 import { CreateUserSchema, LoginUserSchema } from "../schemas/userSchema";
-import { type ZodLoginUserPayload, type ZodCreateUserPayload } from "../types/userTypes";
+import { type ZodCreateUserPayload, type ZodLoginUserPayload } from "../types/userTypes";
+import { schemaValidator } from "./validationUtils";
 
 const toValidUserLoginDetails = schemaValidator<ZodLoginUserPayload>(LoginUserSchema);
 

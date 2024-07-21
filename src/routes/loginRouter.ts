@@ -1,10 +1,11 @@
-import { Router } from "express";
-import brcypt from "bcrypt";
-import { toValidUserLoginDetails } from "../utils/userUtils";
-import { ValidationError } from "zod-validation-error";
-import userService from "../services/userService";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import brcypt from "bcrypt";
+import { Router } from "express";
 import jwt from "jsonwebtoken";
+import { ValidationError } from "zod-validation-error";
+
+import userService from "../services/userService";
+import { toValidUserLoginDetails } from "../utils/userUtils";
 
 const router = Router();
 

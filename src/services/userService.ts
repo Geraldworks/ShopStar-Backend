@@ -1,8 +1,9 @@
-import { type PrismaNonSensitiveUser, type ZodCreateUserPayload } from "../types/userTypes";
 import { type User as PrismaUserModel } from "@prisma/client";
-import brcypt from "bcrypt";
-import db from "../utils/db";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import brcypt from "bcrypt";
+
+import { type PrismaNonSensitiveUser, type ZodCreateUserPayload } from "../types/userTypes";
+import db from "../utils/db";
 
 const getAll = async (): Promise<PrismaNonSensitiveUser[]> => {
   return await db.user.findMany();

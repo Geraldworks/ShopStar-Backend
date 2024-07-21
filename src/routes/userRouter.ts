@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { Router } from "express";
+import { ValidationError } from "zod-validation-error";
+
 import userService from "../services/userService";
 import { toValidUserDetails } from "../utils/userUtils";
-import { ValidationError } from "zod-validation-error";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 const router = Router();
 
