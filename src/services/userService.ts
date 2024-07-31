@@ -1,5 +1,4 @@
 import { type User as PrismaUserModel } from "@prisma/client";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import brcypt from "bcrypt";
 
 import { type PrismaNonSensitiveUser, type ZodCreateUserPayload } from "../types/userTypes";
@@ -27,17 +26,9 @@ const createUser = async (userPayload: ZodCreateUserPayload): Promise<PrismaNonS
     username: userPayload.username,
     passwordHash: hashedPassword
   };
-  try {
-    const userFromDb = await db.user.create({ data: userToDb });
-    const { id, passwordHash, ...safeUserCreds } = userFromDb;
-    return safeUserCreds;
-  } catch (err: unknown) {
-    if (err instanceof PrismaClientKnownRequestError) {
-      console.log(err.code);
-      console.log(err.message);
-    }
-    throw err;
-  }
+  const userFromDb = await db.user.create({ data: userToDb });
+  const { id, passwordHash, ...safeUserCreds } = userFromDb;
+  return safeUserCreds;
 };
 
 export default { getAll, getOne, createUser };

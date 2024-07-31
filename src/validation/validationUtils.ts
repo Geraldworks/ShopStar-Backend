@@ -13,6 +13,4 @@ const schemaValidator =
     }
   };
 
-// const schemaValidator<T extends ZodSchema> = ()
-
 export { schemaValidator };

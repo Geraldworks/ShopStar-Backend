@@ -1,11 +1,12 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import brcypt from "bcrypt";
 import { Router } from "express";
-import jwt from "jsonwebtoken";
+import jwt, { type Secret } from "jsonwebtoken";
 import { ValidationError } from "zod-validation-error";
 
 import userService from "../services/userService";
-import { toValidUserLoginDetails } from "../utils/userUtils";
+import { tokenExtractor } from "../utils/middleware";
+import { toValidUserLoginDetails } from "../validation/userValidation";
 
 const router = Router();
 
@@ -42,6 +43,21 @@ router.post("/", async (req, res, next) => {
         .json({ message: "User does not exist in database. Please create an account" });
     } else {
       next(err);
+    }
+  }
+});
+
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
+router.post("/jwt", tokenExtractor, async (req, res) => {
+  try {
+    const token: string = req.body.token;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const secret: Secret = process.env.SECRET!;
+    jwt.verify(token, secret);
+    res.status(200).json({ message: "valid token" });
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      res.status(401).json({ message: "Invalid token. Please sign in again." });
     }
   }
 });

@@ -1,4 +1,4 @@
-import { CreateUserSchema, LoginUserSchema } from "../schemas/userSchema";
+import { CreateUserSchema, LoginUserSchema } from "../schemas/authSchema";
 import { type ZodCreateUserPayload, type ZodLoginUserPayload } from "../types/userTypes";
 import { schemaValidator } from "./validationUtils";
 

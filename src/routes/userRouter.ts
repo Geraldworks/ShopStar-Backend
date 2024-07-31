@@ -4,7 +4,7 @@ import { Router } from "express";
 import { ValidationError } from "zod-validation-error";
 
 import userService from "../services/userService";
-import { toValidUserDetails } from "../utils/userUtils";
+import { toValidUserDetails } from "../validation/userValidation";
 
 const router = Router();
 

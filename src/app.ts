@@ -4,7 +4,7 @@ import express, { json } from "express";
 import loginRouter from "./routes/loginRouter";
 import productRouter from "./routes/productRouter";
 import userRouter from "./routes/userRouter";
-import middleware from "./utils/middleware";
+import { customErrorHandler } from "./utils/middleware";
 
 const app = express();
 
@@ -23,6 +23,6 @@ app.use("/api/login", loginRouter);
 app.use("/api/users", userRouter);
 app.use("/api/products", productRouter);
 
-app.use(middleware.customErrorHandler);
+app.use(customErrorHandler);
 
 export default app;
