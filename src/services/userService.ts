@@ -27,7 +27,7 @@ const createUser = async (userPayload: ZodCreateUserPayload): Promise<PrismaNonS
     passwordHash: hashedPassword
   };
   const userFromDb = await db.user.create({ data: userToDb });
-  const { id, passwordHash, ...safeUserCreds } = userFromDb;
+  const { passwordHash, ...safeUserCreds } = userFromDb;
   return safeUserCreds;
 };
 

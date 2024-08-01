@@ -4,22 +4,26 @@ import { Router } from "express";
 import { ValidationError } from "zod-validation-error";
 
 import userService from "../services/userService";
+import db from "../utils/db";
+import { tokenExtractor, userExtractor } from "../utils/middleware";
 import { toValidUserDetails } from "../validation/userValidation";
 
 const router = Router();
 
-router.get("/", (_req, res) => {
-  void (async () => {
-    try {
-      // modify what people see in the api
-      const users = await userService.getAll();
-      res.json(users);
-    } catch (e: unknown) {
-      res.json({
-        message: "an error occurred when retrieving all users"
-      });
+router.get("/", tokenExtractor, userExtractor, async (req, res, next) => {
+  try {
+    const userFromDb = await db.user.findUniqueOrThrow({
+      where: { username: req.body.user.username }
+    });
+    const { id, passwordHash, ...userToClient } = userFromDb;
+    res.status(200).json(userToClient);
+  } catch (err: unknown) {
+    if (err instanceof PrismaClientKnownRequestError && err.code === "P2025") {
+      res.status(404).json({ message: err.message });
+    } else {
+      next(err);
     }
-  })();
+  }
 });
 
 router.post("/", async (req, res, next) => {

@@ -5,6 +5,6 @@ import { type CreateUserSchema, type LoginUserSchema } from "../schemas/authSche
 
 export type PrismaUser = Omit<PrismaUserModel, "id">;
 export type PrismaUserPasswordHash = Pick<PrismaUserModel, "passwordHash">;
-export type PrismaNonSensitiveUser = Omit<PrismaUserModel, "id" | "passwordHash">;
+export type PrismaNonSensitiveUser = Omit<PrismaUserModel, "passwordHash">;
 export type ZodCreateUserPayload = z.infer<typeof CreateUserSchema>;
 export type ZodLoginUserPayload = z.infer<typeof LoginUserSchema>;

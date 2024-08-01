@@ -27,6 +27,6 @@ model Listing {
   price        Int
   listingImage String
   createdAt    DateTime
-  poster       User    @relation(fields: [userId], references: [id])
-  userId       Int
+  poster       User     @relation(fields: [username], references: [username])
+  username     String
 }
