@@ -1,6 +1,9 @@
 import { Router } from "express";
+import { ValidationError } from "zod-validation-error";
 
 import listingService from "../services/listingService";
+import { tokenExtractor, userExtractor } from "../utils/middleware";
+import { toValidListingPayload } from "../validation/listingValidation";
 
 const router = Router();
 
@@ -36,6 +39,28 @@ router.get("/search", (req, res, next) => {
       next();
     }
   })();
+});
+
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
+router.post("/", tokenExtractor, userExtractor, async (req, res, next) => {
+  const listingPayload = req.body.data;
+  const username: string = req.body.user.username;
+  try {
+    const validListing = toValidListingPayload(listingPayload);
+    const listingToDb = {
+      ...validListing,
+      username,
+      listingImage: "https://picsum.photos/222/166" // randomly generated for completion sake
+    };
+    const newListing = await listingService.createOne(listingToDb);
+    res.status(201).json(newListing);
+  } catch (err: unknown) {
+    if (err instanceof ValidationError) {
+      res.status(400).json({ message: err.message });
+    } else {
+      next(err);
+    }
+  }
 });
 
 export default router;
