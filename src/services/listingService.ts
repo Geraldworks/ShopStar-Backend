@@ -37,4 +37,25 @@ const createOne = async (
   return listingFromDb;
 };
 
-export default { getOne, getAll, createOne };
+const updateOne = async (
+  listingPayload: ZodCreateListingPayload,
+  listingId: number
+): Promise<PrismaListingModel> => {
+  const listingFromDb = await db.listing.update({
+    where: {
+      id: listingId
+    },
+    data: listingPayload
+  });
+  return listingFromDb;
+};
+
+const deleteOne = async (listingId: number): Promise<void> => {
+  await db.listing.delete({
+    where: {
+      id: listingId
+    }
+  });
+};
+
+export default { getOne, getAll, createOne, updateOne, deleteOne };

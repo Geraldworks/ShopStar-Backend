@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { Router } from "express";
 import { ValidationError } from "zod-validation-error";
@@ -56,7 +57,6 @@ router.get("/:id", (req, res) => {
   })();
 });
 
-// eslint-disable-next-line @typescript-eslint/no-misused-promises
 router.post("/", tokenExtractor, userExtractor, async (req, res, next) => {
   const listingPayload = req.body.data;
   const username: string = req.body.user.username;
@@ -75,6 +75,33 @@ router.post("/", tokenExtractor, userExtractor, async (req, res, next) => {
     } else {
       next(err);
     }
+  }
+});
+
+router.put("/:id", tokenExtractor, userExtractor, async (req, res, next) => {
+  const listingId = Number(req.params.id);
+  const updatedListingPyaload = req.body.data;
+  try {
+    const validListing = toValidListingPayload(updatedListingPyaload);
+    const updatedListing = await listingService.updateOne(validListing, listingId);
+    res.status(200).json(updatedListing);
+  } catch (err: unknown) {
+    if (err instanceof ValidationError) {
+      res.status(400).json({ message: err.message });
+    } else {
+      next(err);
+    }
+  }
+});
+
+router.delete("/:id", tokenExtractor, userExtractor, async (req, res, next) => {
+  const listingId = Number(req.params.id);
+  console.log(listingId);
+  try {
+    await listingService.deleteOne(listingId);
+    res.status(204).json({ message: "successfully deleted" });
+  } catch (err) {
+    next(err);
   }
 });
 
