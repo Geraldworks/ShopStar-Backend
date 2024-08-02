@@ -3,6 +3,11 @@ import { type Listing as PrismaListingModel } from "@prisma/client";
 import { type ZodCreateListingPayload } from "../types/listingTypes";
 import db from "../utils/db";
 
+const getOne = async (listingId: number): Promise<PrismaListingModel> => {
+  const listing = await db.listing.findUniqueOrThrow({ where: { id: listingId } });
+  return listing;
+};
+
 interface filterConfig {
   title?: string;
   username?: string;
@@ -32,4 +37,4 @@ const createOne = async (
   return listingFromDb;
 };
 
-export default { getAll, createOne };
+export default { getOne, getAll, createOne };

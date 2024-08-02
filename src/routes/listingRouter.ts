@@ -1,3 +1,4 @@
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { Router } from "express";
 import { ValidationError } from "zod-validation-error";
 
@@ -37,6 +38,20 @@ router.get("/search", (req, res, next) => {
     } catch (err: unknown) {
       console.log(err);
       next();
+    }
+  })();
+});
+
+router.get("/:id", (req, res) => {
+  const listingId = Number(req.params.id);
+  void (async () => {
+    try {
+      const listing = await listingService.getOne(listingId);
+      res.status(200).json(listing);
+    } catch (err: unknown) {
+      if (err instanceof PrismaClientKnownRequestError && err.code === "P2025") {
+        res.status(404).json({ message: err.message });
+      }
     }
   })();
 });

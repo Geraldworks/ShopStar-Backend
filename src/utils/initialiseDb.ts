@@ -120,11 +120,11 @@ export const initialise = async (): Promise<void> => {
 
   // creates one user in the db
   const user = await userService.createUser({
-    firstName: "gerald",
-    lastName: "ho",
-    email: "geraldho@gmail.com",
-    username: "geraldho",
-    password: "geraldho"
+    firstName: "Celine",
+    lastName: "Hether",
+    email: "celinehether@gmail.com",
+    username: "CelineHether",
+    password: "CelineHether"
   });
 
   // adds the records
@@ -137,3 +137,13 @@ export const initialise = async (): Promise<void> => {
     }
   });
 };
+
+initialise()
+  .then(() => {
+    console.log("successfully initialised the database");
+    process.exit(0);
+  })
+  .catch((err) => {
+    console.error("Failed to initialize the database", err);
+    process.exit(1);
+  });

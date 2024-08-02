@@ -12,7 +12,8 @@
     "prettier:write": "prettier --write .",
     "prettier:check": "prettier --check .",
     "dev": "NODE_ENV=dev ts-node-dev src/index.ts",
-    "test": "NODE_ENV=test npm run docker:test && npm run prisma-migrate:test && dotenv -e .env.test jest"
+    "test": "NODE_ENV=test npm run docker:test && npm run prisma-migrate:test && dotenv -e .env.test jest",
+    "init-db:dev": "npm run prisma-migrate:dev && dotenv -e .env.dev -- ts-node src/utils/initialiseDb.ts"
   },
   "author": "",
   "license": "ISC",
