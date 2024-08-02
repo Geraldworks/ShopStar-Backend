@@ -5,15 +5,17 @@
   "main": "src/index.js",
   "scripts": {
     "docker:test": "docker compose -f test.docker-compose.yml up -d",
-    "prisma-migrate:dev": "dotenv -e .env.dev -- npx prisma migrate dev --schema prisma/schema.prisma",
-    "prisma-migrate:test": "dotenv -e .env.test -- npx prisma db push --schema prisma/schema.test.prisma",
-    "prisma-studio:dev": "dotenv -e .env.dev -- npx prisma studio --schema prisma/schema.prisma",
-    "prisma-studio:test": "dotenv -e .env.test -- npx prisma studio --schema prisma/schema.test.prisma",
+    "prisma-migrate:dev": "dotenv -e .env.dev -- prisma migrate dev --schema prisma/schema.prisma",
+    "prisma-migrate:test": "dotenv -e .env.test -- prisma db push --schema prisma/schema.test.prisma",
+    "prisma-studio:dev": "dotenv -e .env.dev -- prisma studio --schema prisma/schema.prisma",
+    "prisma-studio:test": "dotenv -e .env.test -- prisma studio --schema prisma/schema.test.prisma",
     "prettier:write": "prettier --write .",
     "prettier:check": "prettier --check .",
     "dev": "NODE_ENV=dev ts-node-dev src/index.ts",
     "test": "NODE_ENV=test npm run docker:test && npm run prisma-migrate:test && dotenv -e .env.test jest",
-    "init-db:dev": "npm run prisma-migrate:dev && dotenv -e .env.dev -- ts-node src/utils/initialiseDb.ts"
+    "init-db:dev": "npm run prisma-migrate:dev && dotenv -e .env.dev -- ts-node src/utils/initialiseDb.ts",
+    "build": "dotenv -e .env.prod -- prisma migrate deploy --schema prisma/schema.prisma && prisma generate && tsc",
+    "start": "dotenv -e .env.prod -- node build/index.js"
   },
   "author": "",
   "license": "ISC",
