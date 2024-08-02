@@ -83,7 +83,14 @@ router.put("/:id", tokenExtractor, userExtractor, async (req, res, next) => {
   const updatedListingPyaload = req.body.data;
   try {
     const validListing = toValidListingPayload(updatedListingPyaload);
-    const updatedListing = await listingService.updateOne(validListing, listingId);
+    const listingToDb = {
+      ...validListing,
+      listingImage:
+        validListing.listingImage === ""
+          ? "https://picsum.photos/222/166"
+          : validListing.listingImage
+    };
+    const updatedListing = await listingService.updateOne(listingToDb, listingId);
     res.status(200).json(updatedListing);
   } catch (err: unknown) {
     if (err instanceof ValidationError) {
@@ -96,7 +103,6 @@ router.put("/:id", tokenExtractor, userExtractor, async (req, res, next) => {
 
 router.delete("/:id", tokenExtractor, userExtractor, async (req, res, next) => {
   const listingId = Number(req.params.id);
-  console.log(listingId);
   try {
     await listingService.deleteOne(listingId);
     res.status(204).json({ message: "successfully deleted" });
